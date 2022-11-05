@@ -1,14 +1,15 @@
 import { Router } from "express";
+import { borrarReceta, crearReceta, editarReceta, listaReceta, obtenerReceta } from "../controllers/receta.controllers";
 
 const rutas = Router();
 
 rutas.route("/receta")
-.get()
-.post()
+.get(listaReceta)
+.post(crearReceta)
 
 rutas.route("/receta/:id")
-.get()
-.put()
-.delete()
+.get(obtenerReceta)
+.put(editarReceta)
+.delete(borrarReceta)
 
 export default rutas;
