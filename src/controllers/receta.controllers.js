@@ -57,8 +57,8 @@ export const borrarReceta = async (req, res) => {
 
 export const obtenerReceta = async (req, res) => {
   try {
-    const recetaBuscada = await Receta.findById(req.parasm.id);
-    res.status(recetaBuscada);
+    const recetaBuscada = await Receta.findById(req.params.id);
+    res.status(200).json(recetaBuscada);
   } catch (error) {
     console.log(error);
     res.status(404).json({
