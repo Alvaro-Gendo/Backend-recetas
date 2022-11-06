@@ -1,4 +1,5 @@
 import Receta from "../models/receta";
+import Usuarios from "../models/usuarios";
 
 export const listaReceta = async (req, res) => {
   try {
@@ -63,6 +64,33 @@ export const obtenerReceta = async (req, res) => {
     console.log(error);
     res.status(404).json({
       message: "La receta no fue encontrada",
+    });
+  }
+};
+
+export const crearUsuario = async(req, res) =>{
+  try {
+    const usuarioNuevo = await Usuarios(req.body);
+    await usuarioNuevo.save();
+    res.status(201).json({
+      message: "El usuario fue creado"
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(404).json({
+      message: "Error al crear usuario"
+    })
+  }
+}
+
+export const listaUsuario = async (req, res) => {
+  try {
+    const listaUsuarios = await Usuarios.find();
+    res.status(200).json(listaUsuarios);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({
+      message: "Error al buscar usuario/s",
     });
   }
 };
