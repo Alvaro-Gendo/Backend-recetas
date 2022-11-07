@@ -1,19 +1,78 @@
 import { Router } from "express";
 import { borrarReceta, crearReceta, crearUsuario, editarReceta, listaReceta, listaUsuario, obtenerReceta } from "../controllers/receta.controllers";
-
+import { check } from "express-validator";
 const rutas = Router();
 
 rutas.route("/receta")
 .get(listaReceta)
-.post(crearReceta)
+.post([
+    check("titulo")
+    .notEmpty()
+    .withMessage("Campo obligatorio")
+    .isLength({min:5, max:50})
+    .withMessage("El nombre de la receta debe tener entre 5 y 50 caracteres"),
+    check("pasos")
+    .notEmpty()
+    .withMessage("Campo obligatorio")
+    .isLength({min:5, max:5000})
+    .withMessage("El nombre de la receta debe tener entre 5 y 50 caracteres"),
+    check("ingredientes")
+    .notEmpty()
+    .withMessage("Campo obligatorio")
+    .isLength({min:5, max:500})
+    .withMessage("El nombre de la receta debe tener entre 5 y 50 caracteres"),
+    check("imagen")
+    .notEmpty()
+    .withMessage("Campo obligatorio")
+    .matches(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/)
+    .withMessage("Ingresar URL valida")
+],crearReceta)
 
 rutas.route("/receta/:id")
 .get(obtenerReceta)
-.put(editarReceta)
+.put([
+    check("titulo")
+    .notEmpty()
+    .withMessage("Campo obligatorio")
+    .isLength({min:5, max:50})
+    .withMessage("El nombre de la receta debe tener entre 5 y 50 caracteres"),
+    check("pasos")
+    .notEmpty()
+    .withMessage("Campo obligatorio")
+    .isLength({min:5, max:5000})
+    .withMessage("El nombre de la receta debe tener entre 5 y 50 caracteres"),
+    check("ingredientes")
+    .notEmpty()
+    .withMessage("Campo obligatorio")
+    .isLength({min:5, max:500})
+    .withMessage("El nombre de la receta debe tener entre 5 y 50 caracteres"),
+    check("imagen")
+    .notEmpty()
+    .withMessage("Campo obligatorio")
+    .matches(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/)
+    .withMessage("Ingresar URL valida")
+],editarReceta)
 .delete(borrarReceta)
 
 rutas.route("/usuario")
 .get(listaUsuario)
-.post(crearUsuario)
+.post([
+    check("usuario")
+    .notEmpty()
+    .withMessage("Campo obligatorio")
+    .isLength({min:5, max:50}),
+    check("mail")
+    .notEmpty()
+    .withMessage("Campo obligartorio")
+    .isLength({min:10, max:50})
+    .matches(/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/)
+    .withMessage("Ingresar un email valido"),
+    check("password")
+    .notEmpty()
+    .withMessage("Campo obligatorio")
+    .isLength({min:10, max:50})
+    .matches(/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/)
+    .withMessage("Ingresar una clave valida")
+],crearUsuario)
 
 export default rutas;
